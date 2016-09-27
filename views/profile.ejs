@@ -1,0 +1,99 @@
+<!-- views/profile.ejs -->
+<!doctype html>
+<html>
+<head>
+	<title>Profile</title>
+
+	<link rel="apple-touch-icon" sizes="57x57" href="favicon_imgs/apple-icon-57x57.png">
+	<link rel="apple-touch-icon" sizes="60x60" href="favicon_imgs/apple-icon-60x60.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="favicon_imgs//apple-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="76x76" href="favicon_imgs/apple-icon-76x76.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="favicon_imgs/apple-icon-114x114.png">
+	<link rel="apple-touch-icon" sizes="120x120" href="favicon_imgs/apple-icon-120x120.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="favicon_imgs/apple-icon-144x144.png">
+	<link rel="apple-touch-icon" sizes="152x152" href="favicon_imgs/apple-icon-152x152.png">
+	<link rel="apple-touch-icon" sizes="180x180" href="favicon_imgs/apple-icon-180x180.png">
+	<link rel="icon" type="image/png" sizes="192x192"  href="favicon_imgs/android-icon-192x192.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="favicon_imgs/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="96x96" href="favicon_imgs/favicon-96x96.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="favicon_imgs/favicon-16x16.png">
+	<link rel="manifest" href="favicon_imgs/manifest.json">
+	<meta name="msapplication-TileColor" content="#ffffff">
+	<meta name="msapplication-TileImage" content="favicon_imgs/ms-icon-144x144.png">
+	<meta name="theme-color" content="#ffffff">
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+	<style>
+		body 		{ padding-top:0px; word-wrap:break-word; }
+		.form-control {
+			border: 1px solid black;
+			border-radius: initial !important;
+
+		}
+
+		.btn-submit {
+			border: 1px solid black;
+			color: black;
+			border-radius: initial !important;
+			background-color: transparent;
+		}
+		.btn-submit:hover, .btn-submit:focus {
+			border-color: black;
+			background-color: rgb(221, 221, 221);
+			color: black;
+		}
+	</style>
+</head>
+<body>
+<div class="container">
+
+	<div class="page-header text-center">
+		<h1><span class="fa fa-anchor"></span> Profile Page</h1>
+		<a href="/logout" class="btn btn-default btn-sm">Logout</a>
+	</div>
+
+	<div class="row">
+
+
+		<div class="col-sm-12">
+			<div class="well">
+			<center>
+				<h3><span class="fa fa-user"></span> Points</h3>
+
+				<label value="<%= user.local.points %>"> 0 </label>
+			</center>
+			</div>
+			<div class="well">
+				<h3><span class="fa fa-user"></span> Information</h3>
+					<form action="/setinfo" method="post">
+						<div class="form-group">
+							<label>First Name</label>
+							<input type="text" class="form-control" name="firstname" value="<%= user.local.firstname %>">
+						</div>
+						<div class="form-group">
+							<label>Last Name</label>
+							<input type="text" class="form-control" name="lastname" value="<%= user.local.lastname %>">
+						</div>
+						<div class="form-group">
+							<label>Grade</label>
+							<select name="grade" class="form-control" id="grade" selected=<%= user.local.grade %>>
+								<%
+									var options = [9,10,11,12]
+									for(var i = 0; i < options.length; i++) { %>
+										<option <% if (user.local.grade == options[i]) { %>selected<% } %> >  <%= options[i] %>  </option>
+									<% }
+								%>
+							</select>
+						</div>
+
+						<button type="submit" class="btn-submit btn btn-warning btn-lg">Update Info</button>
+					</form>
+				</h3>
+			</div>
+		</div>
+
+	</div>
+
+</div>
+</body>
+</html>

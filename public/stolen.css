@@ -1,0 +1,85 @@
+
+body {
+	font-family: "Open Sans", sans-serif;
+}
+
+h1 {
+	font-weight: 100;
+}
+h4 {
+	margin-right: auto;
+	margin-left: auto;
+	width: 164px;
+	margin-top:30px;
+}
+.navbar{
+	border-bottom: 1px solid #eee;
+	min-height: 40px;
+	background-color: white;
+}
+
+.container {
+	width:100%;
+	margin:0;
+	padding: 0;
+}
+
+.content {
+	width:100%;
+	margin:0;
+	padding:0;
+}
+
+.btn-custom {
+	border: 1.5px solid white;
+	background-color: transparent;
+	border-radius: initial !important;
+	color: white;
+	margin:5px;
+	position: relative;
+	top:2em;
+}
+.btn-custom:hover, .btn-custom:active {
+	border-color:white;
+	background-color: rgba(221, 221, 221, 0.6);
+}
+
+a {
+	color: black;
+}
+
+a:hover {
+	color: gray;
+}
+
+
+#study {
+	border-color:#ddd;
+	border-width: 1px;
+	border-style:solid;
+	border-radius: 4px 4px;
+	padding-bottom: 10px;
+	width:100%;
+}
+
+.wide {
+  width: 100%;
+  height: 500px;
+  background-image:url('bg.jpg');
+  background-size:cover;
+}
+
+.welcome {
+    margin-left: auto;
+    margin-right: auto;
+    border: 2px solid white;
+    max-width: 300px;
+    text-align: center;
+    position: relative;
+    color: white;
+    top: 20%;
+    padding: 10px 10px 100px 10px;
+
+
+}
+
