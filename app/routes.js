@@ -17,11 +17,9 @@ module.exports = function(app, passport) {
 	      userMap[user._id] = user;
 	    });
 
-			console.log(userMap);
-			res.render('index.ejs')
+		console.log(userMap);
+		res.render('index.ejs')
 	  });
-
-
 	});
 
 	// =====================================
@@ -48,6 +46,7 @@ module.exports = function(app, passport) {
 		res.render('signup.ejs', { message: req.flash('signupMessage') });
 	});
 
+
 	// process the signup form
 	app.post('/signup', passport.authenticate('local-signup', {
 		successRedirect : '/profile', // redirect to the secure profile section
@@ -60,11 +59,29 @@ module.exports = function(app, passport) {
 	// =====================================
 	// we will want this protected so you have to be logged in to visit
 	// we will use route middleware to verify this (the isLoggedIn function)
+	var array = [];
+
 	app.get('/profile', isLoggedIn, function(req, res) {
-		res.render('profile.ejs', {
-			user : req.user, // get the user out of session and pass to template
-			
-		});
+		if(req.user.local.email == "admin@admin.com"){
+			var userMap = {};
+			mongoose.model("User").find({}, function(err, users)
+			{
+			    users.forEach(function(user) {
+					userMap[user._id] = user;
+			    });
+				console.log(userMap);
+				res.render('admin.ejs', {
+					user : req.user, // get the user out of session and pass to template
+					members: userMap
+				});
+			});
+		}
+		else{
+			res.render('profile.ejs', {
+				user : req.user, // get the user out of session and pass to template
+				
+			});
+		}
 	});
 
 	app.post('/profile', isLoggedIn, function(req, res) {
@@ -73,7 +90,7 @@ module.exports = function(app, passport) {
 		});
 	});
 
-	app.post('/panellogin', isLoggedIn, function(req, res) {
+	app.get('/panellogin', isLoggedIn, function(req, res) {
 		if(req.body == "test")
 		{
 			var userMap = {};
@@ -124,6 +141,7 @@ module.exports = function(app, passport) {
 		req.user.local.firstname = req.body.firstname;
 		req.user.local.lastname = req.body.lastname;
 		req.user.local.grade = req.body.grade;
+		req.user.local.points = 0;
 		req.user.save(function (err, member) {
 			if (err) return console.error(err);
 			console.log("saved");

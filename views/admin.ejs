@@ -1,8 +1,8 @@
-<!-- views/login.ejs -->
+<!-- views/profile.ejs -->
 <!doctype html>
 <html>
 <head>
-	<title>Gunn Red Cross Login</title>
+	<title>admin</title>
 
 	<link rel="apple-touch-icon" sizes="57x57" href="favicon_imgs/apple-icon-57x57.png">
 	<link rel="apple-touch-icon" sizes="60x60" href="favicon_imgs/apple-icon-60x60.png">
@@ -21,63 +21,70 @@
 	<meta name="msapplication-TileColor" content="#ffffff">
 	<meta name="msapplication-TileImage" content="favicon_imgs/ms-icon-144x144.png">
 	<meta name="theme-color" content="#ffffff">
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
 	<style>
-		body 		{ padding-top:40px; }
+		body 		{ padding-top:0px; word-wrap:break-word; }
 		.form-control {
 			border: 1px solid black;
 			border-radius: initial !important;
+
 		}
+
 		.btn-submit {
 			border: 1px solid black;
-			background-color: transparent;
-			border-radius: initial !important;
 			color: black;
+			border-radius: initial !important;
+			background-color: transparent;
 		}
 		.btn-submit:hover, .btn-submit:focus {
 			border-color: black;
 			background-color: rgb(221, 221, 221);
 			color: black;
 		}
-		.alert {
-			border-radius: initial !important;
-		}
 	</style>
 </head>
 <body>
 <div class="container">
 
-<div class="col-sm-6 col-sm-offset-3">
+	<div class="page-header text-center">
+		<h1><span class="fa fa-anchor"></span> Admin Panel</h1>
+		<a href="/logout" class="btn btn-default btn-sm">Logout</a>
+	</div>
 
-	<h1><span class="fa fa-sign-in"></span> Login</h1>
-
-	<!-- show any messages that come back with authentication -->
-	<% if (message.length > 0) { %>
-		<div class="alert alert-danger"><%= message %></div>
-	<% } %>
-
-	<!-- LOGIN FORM -->
-	<form action="/login" method="post">
-		<div class="form-group">
-			<label>Email</label>
-			<input type="text" id="email" class="form-control" name="email">
+	<div class="row">
+		<div class="col-sm-12">
+				<h3><span class="fa fa-user"></span>control the world</h3>
+				<table class="table table-bordered">
+					<thead>
+						<tr>
+							<th>Email</th>
+							<th>First Name</th>
+							<th>Last Name</th>
+							<th>Grade</th>
+							<th>Points</th>
+						</tr>
+					</thead>
+				<%
+					for (var key in members)
+					{
+						if (members.hasOwnProperty(key)) {
+							%>
+								<tr>
+									<td><%= members[key].local.email %></td>
+									<td><%= members[key].local.firstname %></td>
+									<td><%= members[key].local.lastname %></td>
+									<td><%= members[key].local.grade %></td>
+									<td><input value="<%= members[key].local.points %>"></td></td>
+								</tr>
+							<%
+						}
+					}
+				%>
+			</table>
+			<button type="submit" class="btn-submit btn btn-warning btn-lg">Change Points</button>
 		</div>
-		<div class="form-group">
-			<label>Password</label>
-			<input type="password" class="form-control" name="password">
-		</div>
-
-		<button type="submit" class="btn-submit btn btn-warning btn-lg" onclick="same()">Login</button>
-	</form>
-
-	<hr>
-
-	<p>Need an account? <a href="/signup">Signup</a></p>
-	<p>Or go <a href="/">home</a>.</p>
-
-</div>
-
+	</div>
 </div>
 </body>
 </html>
