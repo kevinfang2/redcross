@@ -68,7 +68,7 @@ module.exports = function(app, passport) {
 			{
 			    users.forEach(function(user) {
 					userMap[user._id] = user;
-			    });
+				});
 				console.log(userMap);
 				res.render('admin.ejs', {
 					user : req.user, // get the user out of session and pass to template
@@ -79,9 +79,21 @@ module.exports = function(app, passport) {
 		else{
 			res.render('profile.ejs', {
 				user : req.user, // get the user out of session and pass to template
-				
+
 			});
 		}
+	});
+
+	app.get('/setPoints', function(req, res)
+	{
+		console.log(req)
+		req.user.local.points = req.body.points;
+
+		req.user.save(function (err, member) {
+		if (err) return console.error(err);
+			console.log("saved");
+		});
+		res.redirect('/profile');
 	});
 
 	app.post('/profile', isLoggedIn, function(req, res) {
@@ -135,26 +147,22 @@ module.exports = function(app, passport) {
 	//register names and stuff
 	app.post('/setinfo', function(req, res)
 	{
+		
 		console.log("got post");
 		console.log(req.user.local.email);
 		console.log(req.body.firstname);
 		req.user.local.firstname = req.body.firstname;
 		req.user.local.lastname = req.body.lastname;
 		req.user.local.grade = req.body.grade;
-		req.user.local.points = 0;
+		req.user.local.points = req.body.points;
 		req.user.save(function (err, member) {
 			if (err) return console.error(err);
-			console.log("saved");
+			console.log(req.body.points);
 		});
 		res.redirect('/profile');
 	});
 
-	app.post('/setPoints', function(req, res)
-	{
-		if(req.body.submitbutton == 'add'){
-			req.user.local.points = req.body.points;
-		}
-	})
+
 
 	// app.post('/setRegionals', function(req, res)
 	// {

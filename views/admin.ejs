@@ -75,6 +75,7 @@
 									<td><%= members[key].local.firstname %></td>
 									<td><%= members[key].local.lastname %></td>
 									<td><%= members[key].local.grade %></td>
+									<form action="/setinfo" method="post">
 									<td><input value="<%= members[key].local.points %>"></td></td>
 								</tr>
 							<%
@@ -83,6 +84,7 @@
 				%>
 			</table>
 			<button type="submit" class="btn-submit btn btn-warning btn-lg">Change Points</button>
+		</form>
 		</div>
 	</div>
 </div>
