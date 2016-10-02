@@ -84,17 +84,56 @@ module.exports = function(app, passport) {
 		}
 	});
 
-	app.get('/setPoints', function(req, res)
+	app.post('/setPoints', function(req, res)
 	{
-		console.log(req)
-		req.user.local.points = req.body.points;
+		console.log("got here");
+		
+		var userMap = {};
 
-		req.user.save(function (err, member) {
-		if (err) return console.error(err);
-			console.log("saved");
-		});
-		res.redirect('/profile');
+		mongoose.model("User").findOne({ 'local.email': req.body.email}, function(err, user) {
+		    if (err){
+		    	console.log(err)
+		    }
+		    console.log(req.body.email)
+		    if (! user){
+		        res.json('nope');
+		        console.log('nope');
+		    }
+		    else{
+		    	console.log(req.body.points);
+		        user.local.points = req.body.points;
+		        user.save(function (err) {
+		            if (err){
+		            	console.log(err);
+		            }
+				res.render('admin.ejs', {
+					user : req.user, // get the user out of session and pass to template
+					members: userMap
+				});
+
+		        });
+		    }
+		})
+
+		// mongoose.model("User").find({}, function(err, users)
+		// 	{
+		// 	    // users.forEach(function(user) {
+		// 		req.user.local.points = req.body.user.points;
+		// 		console.log(req.body.user.points);
+
+		// 		req.user.save(function (err, member) {
+		// 			if (err) return console.error(err);
+		// 			console.log("saved");
+		// 			// });
+		// 		});
+
+		// 		res.render('admin.ejs', {
+		// 			user : req.user, // get the user out of session and pass to template
+		// 			members: userMap
+		// 		});
+		// 	});
 	});
+
 
 	app.post('/profile', isLoggedIn, function(req, res) {
 		res.render('profile.ejs', {
@@ -147,7 +186,6 @@ module.exports = function(app, passport) {
 	//register names and stuff
 	app.post('/setinfo', function(req, res)
 	{
-		
 		console.log("got post");
 		console.log(req.user.local.email);
 		console.log(req.body.firstname);
