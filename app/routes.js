@@ -59,7 +59,7 @@ module.exports = function(app, passport) {
 	// =====================================
 	// we will want this protected so you have to be logged in to visit
 	// we will use route middleware to verify this (the isLoggedIn function)
-	var array = [];
+
 
 	app.get('/profile', isLoggedIn, function(req, res) {
 		if(req.user.local.email == "admin@admin.com"){
@@ -79,10 +79,38 @@ module.exports = function(app, passport) {
 		else{
 			res.render('profile.ejs', {
 				user : req.user, // get the user out of session and pass to template
-
-			});
+				members: userMap
+			});	
 		}
 	});
+
+	app.post('/joinProject', function(req,res){
+		console.log("project joined");
+	});
+
+	
+	app.post('/newProject', function(req, res){
+		console.log("new project");
+		var userMap = {};
+
+		mongoose.model("User").find({}, function(err, users)
+		{
+		    users.forEach(function(user) {
+				userMap[user._id] = user;
+			});
+			console.log(userMap);
+			res.render('profile.ejs', {
+				user : req.user, // get the user out of session and pass to template
+				members: userMap
+			});
+		});
+
+		req.user.projects.name = req.body.name;
+		req.user.projects.description = req.body.description;
+		req.user.projects.category = req.body.category;
+	})
+
+
 
 	app.post('/setPoints', function(req, res)
 	{

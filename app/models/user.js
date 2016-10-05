@@ -12,12 +12,24 @@ var userSchema = mongoose.Schema({
         firstname: String,
         lastname: String,
         grade: Number,
-        points:Number,
+        role: String,
+        description: String,
+        profilePic: { data: Buffer, contentType: String },
+    },
+    projects:{
+        Name: String,
+        Category:String,
+        Description:String,
+        Members:{
+        	Names:String,
+        }
     }
 });
 
 // methods ======================
 // generating a hash
+
+
 userSchema.methods.generateHash = function(password) {
     return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
 };

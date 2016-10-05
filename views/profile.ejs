@@ -17,12 +17,15 @@
 	<link rel="icon" type="image/png" sizes="32x32" href="favicon_imgs/favicon-32x32.png">
 	<link rel="icon" type="image/png" sizes="96x96" href="favicon_imgs/favicon-96x96.png">
 	<link rel="icon" type="image/png" sizes="16x16" href="favicon_imgs/favicon-16x16.png">
+	<link href="css/creative.min.css" rel="stylesheet">
 	<link rel="manifest" href="favicon_imgs/manifest.json">
 	<meta name="msapplication-TileColor" content="#ffffff">
 	<meta name="msapplication-TileImage" content="favicon_imgs/ms-icon-144x144.png">
 	<meta name="theme-color" content="#ffffff">
 	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
 	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+    <script src="bundle.js"> </script>
+
 	<style>
 		body 		{ padding-top:0px; word-wrap:break-word; }
 		.form-control {
@@ -42,58 +45,215 @@
 			background-color: rgb(221, 221, 221);
 			color: black;
 		}
+		textarea {
+    		resize: none;
+		}
 	</style>
 </head>
 <body>
 <div class="container">
 
 	<div class="page-header text-center">
-		<h1><span class="fa fa-anchor"></span> Profile Page</h1>
-		<a href="/logout" class="btn btn-default btn-sm">Logout</a>
+		<h1 id="title">Profile Page</h1>
+		<a href="/"><button onclick = "logout()" style="padding:7px; background-color:#fff; border-color:#ccc;  border-radius:3px;">Logout</button></a>
 	</div>
 
 	<div class="row">
-
-
-		<div class="col-sm-12">
+		<div class="col-sm-6">
 			<div class="well">
-			<center>
-				<h3><span class="fa fa-user"></span> Points</h3>
-
-				<label value="<%= user.local.points %>"> 0 </label>
-			</center>
-			</div>
-			<div class="well">
-				<h3><span class="fa fa-user"></span> Information</h3>
-					<form action="/setinfo" method="post">
-						<div class="form-group">
-							<label>First Name</label>
-							<input type="text" class="form-control" name="firstname" value="<%= user.local.firstname %>">
-						</div>
-						<div class="form-group">
-							<label>Last Name</label>
-							<input type="text" class="form-control" name="lastname" value="<%= user.local.lastname %>">
-						</div>
-						<div class="form-group">
-							<label>Grade</label>
-							<select name="grade" class="form-control" id="grade" selected=<%= user.local.grade %>>
-								<%
-									var options = [9,10,11,12]
-									for(var i = 0; i < options.length; i++) { %>
-										<option <% if (user.local.grade == options[i]) { %>selected<% } %> >  <%= options[i] %>  </option>
-									<% }
-								%>
-							</select>
-						</div>
-
-						<button type="submit" class="btn-submit btn btn-warning btn-lg">Update Info</button>
-					</form>
+				<h3>
+					Change your profile
 				</h3>
+				<form action="/setRegionals" method="post">
+					<div class="form-group">
+						<label id="profile">Role</label>
+						<select name="role" class="form-control" id="role">
+							<option value="Select your type">-- Select your role --</option>
+							<option value="Initiator">Initiators</option>
+							<option value="Contributor">Contributor</option>
+							<option value="Match">Matchmakers</option>
+							<option value="Mentor">Mentor</option>
+						</select>
+					</div>
+				
+				<label id="profile"> One sentence description </label>
+				<textarea rows="2" type="text" style="width:100%; border-radius:5px; border-width:0px" id="onesentencedescription" placeholder="One sentence Blurb"></textarea>
+
+				<label id="profile"> Profile Picture </label>
+				
+				<input id="inp" type='file'>
+				<img id="img" style="width:50%; height:50%;">
+
+				<div id="error1"> </div>
+				<button onclick="saveType()" style="padding:7px; margin-top:5px; background-color:#fff; border-color:#ccc; border-radius:3px;">Save </button>
+				</form>
+
 			</div>
 		</div>
 
+		<div class="col-sm-6">
+			<div class="well">
+				<h3>Create new project</h3>
+				<label> Name </label>
+				<form method="post" action="/newProject">
+					<input type="text" id="projectName" placeholder="Project Name" style="width:100%; border-radius:2px; border-width:1px"> 
+					<label id="profile">Category</label>
+					<select name="category" class="form-control" id="category">
+						<option value="Select your type">-- Select your type --</option>
+						<option value="Initiator">Biology</option>
+						<option value="Contributor">Economics</option>
+						<option value="Match">Environmental Science</option>
+						<option value="Mathematics">Mathematics</option>
+						<option value="Physics">Physics</option>
+						<option value="Business">Business</option>
+						<option value="Education">Education</option>
+						<option value="Arts">Fine Arts</option>
+						<option value="Medicine">Medicine</option>
+						<option value="Psychology">Psychology</option>
+						<option value="Chemistry">Chemistry</option>
+						<option value="Engineering">Engineering</option>
+						<option value="History">History</option>
+						<option value="Music">Music</option>
+						<option value="Social Science">Social Science</option>
+						<option value="Compsci">Computer Science</option>
+						<option value="English">English</option>
+						<option value="Law">Law</option>
+						<option value="Neurobiology">Neurobiology</option>
+						<option value="Sports">Sports</option>
+					</select>
+					<label id="profile">Description</label>
+				    <textarea rows="5" type="text" style="width:100%; border-radius:5px; border-width:0px" id="projectDescription"placeholder="Description"></textarea>
+				   	<button onclick="saveInfo()" style="padding:7px; margin-top:5px; background-color:#fff; border-color:#ccc; border-radius:3px;">Save </button>
+			   	</form>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-sm-12">
+			<div class="well" style="height:500px">
+				<h3>Other projects</h3>
+				<table class="table table-bordered">
+					<thead>
+						<tr>
+							<th>Name</th>
+							<th>Category</th>
+							<th>Description</th>
+						</tr>
+					</thead>
+					<%
+						for (var key in members.projects)
+						{
+							if (members.hasOwnProperty(key)) {
+								%>
+									<tr>
+										<td><%= members[key].projects.Name %></td>
+										<td><%= members[key].projects.Category %></td>
+										<td><%= members[key].projects.Description %></td>
+										<td>
+										<form action="/join" method="post">
+											<input name="points" placeholder="<%= members[key].local.points %>">
+											<button type="submit">Join</button></td>
+										</form>
+									</tr>
+								<%
+							}
+						}
+					%>	
+				</div>
+			</div>
+		</div>
 	</div>
 
 </div>
+
+<script>
+// var firebase = require("/node_modules/firebase");
+// var ref = new firebase("https://palylaunch.firebaseio.com/");
+// var authData = ref.getAuth();
+// var numberOfProjects = 0
+
+// ref.child("projects").once("value", function(snapshot) {
+//   snapshot.forEach(function(childSnapshot) {
+//     var key = childSnapshot.key();
+//     console.log(key);
+//     numberOfProjects += 1
+//     var childData = childSnapshot.val();
+//     console.log(childData);
+//     console.log(numberOfProjects);
+//     $('#table').append('<div class="col-sm-3" style="background-color:#00A300; color:white; border-color:transparent; border: solid #fff; border-width:0 2px;">' + '<h3>' + key + '</h3><b>' + childData.category + '</b><br><p>' + childData.Description + '</p></div>');
+//   });
+// });
+
+
+// ref.child("projects").on("value", function(snapshot) {
+// 	console.log(snapshot.val())
+// 	console.log(snapshot.val().size);
+
+// }, function(errorObject){
+// 	console.log("fk ");
+// })
+
+// ref.child("users").child(authData.uid).on("value", function(snapshot) {
+// 	document.getElementById("title").innerHTMl = snapshot.val().firstname;
+// }, function (errorObject) {
+// 		console.log("The read failed: " + errorObject.code);
+// });
+
+// function EL(id) { return document.getElementById(id); } // Get el by ID helper function
+
+// var imagebase64 = "";
+
+// function readFile() {
+//   if (this.files && this.files[0]) {
+//     var FR= new FileReader();
+//     FR.onload = function(e) {
+//       EL("img").src       = e.target.result;
+//       imagebase64 = e.target.result;
+//     };       
+//     FR.readAsDataURL( this.files[0] );
+//   }
+// }
+
+// EL("inp").addEventListener("change", readFile, false);
+
+// function saveInfo(){
+// 	var e = document.getElementById("category")
+// 	var strUser = e.options[e.selectedIndex].value;
+// 	if(strUser!="Select your type"){
+// 		ref.child("projects").child(document.getElementById("projectName").value).set({
+// 			name:document.getElementById("projectName").value,
+// 			category:strUser,
+// 			Description:document.getElementById("projectDescription").value
+// 		})
+// 	}
+// }
+
+// function saveType(){
+// 	var e = document.getElementById("role");
+// 	var strUser = e.options[e.selectedIndex].value;
+// 	if(strUser!="Select your type" || imagebase64 != ""){
+// 		console.log(strUser)
+// 		console.log(imagebase64)
+// 		console.log(authData.uid);
+//     	ref.child("users").child(authData.uid).push({
+// 			Image: imagebase64,
+// 	    	Description: document.getElementById("onesentencedescription").value,
+// 	    	Role: strUser
+// 		})
+// 	}
+// 	else{
+// 		document.getElementById("error1").innerHTML = "Please fill all required fields";
+// 	}
+	
+// }
+
+
+// function logout(){
+// 	ref.unauth();
+// }
+</script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+
 </body>
 </html>
