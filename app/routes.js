@@ -86,28 +86,27 @@ module.exports = function(app, passport) {
 
 	app.post('/joinProject', function(req,res){
 		console.log("project joined");
+		mongoose.model("Project").find({}, function(err, users)
+		{
+
+		})
 	});
 
 	
 	app.post('/newProject', function(req, res){
 		console.log("new project");
-		var userMap = {};
 
-		mongoose.model("User").find({}, function(err, users)
-		{
-		    users.forEach(function(user) {
-				userMap[user._id] = user;
-			});
-			console.log(userMap);
-			res.render('profile.ejs', {
-				user : req.user, // get the user out of session and pass to template
-				members: userMap
-			});
+		console.log(userMap);
+		res.render('profile.ejs', {
+			user : req.user, // get the user out of session and pass to template
+			members: userMap
 		});
 
-		req.user.projects.name = req.body.name;
-		req.user.projects.description = req.body.description;
-		req.user.projects.category = req.body.category;
+
+		req.projects.name = req.body.name;
+		req.projects.description = req.body.description;
+		req.projects.category = req.body.category;
+		req.user.local.projects = req.body.name;
 	})
 
 
